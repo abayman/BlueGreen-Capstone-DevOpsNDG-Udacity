@@ -1,0 +1,22 @@
+[
+    {
+        "ParameterKey": "ProjectName",
+        "ParameterValue": "Green-Blue-Capstone-Udacity-NDG"
+    },
+    {
+        "ParameterKey": "VpcCIDRBlock",
+        "ParameterValue": "192.168.0.0/16"
+    },
+    {
+        "ParameterKey": "Subnet01CIDRBlock",
+        "ParameterValue": "192.168.1.0/24"
+    },
+    {
+        "ParameterKey": "Subnet02CIDRBlock",
+        "ParameterValue": "192.168.2.0/24"
+    },
+    {
+        "ParameterKey": "Subnet03CIDRBlock",
+        "ParameterValue": "192.168.3.0/24"
+    }
+]

@@ -1,0 +1,178 @@
+Description: >
+    Abdelrahman Ayman / ASU / Udacity / DevOps NDG
+    This template produces the necessary VPC and infra which includes 
+    Subnets, route Tables, and Cidr blocks that we will use for the AWS
+    Kubernetes clusters in YML format and JSON parameters.
+    Project 05 : Green/Blue Capstone Udacity NDG.
+
+Parameters:
+  ProjectName:
+    Description: This is the name of my Capstone NDG Project.
+    Type: String
+
+  VpcCIDRBlock:
+    Description: IP range for the VPC.
+    Type: String
+  
+  Subnet01CIDRBlock:
+    Description: CIDR Block range for the public subnet 01 in the VPC.
+    Type: String
+  
+  Subnet02CIDRBlock:
+    Description: CIDR Block range for the public subnet 02 in the VPC.
+    Type: String
+
+  Subnet03CIDRBlock:
+    Description: CIDR Block range for the public subnet 03 in the VPC if the region has more than 2 Availability Zones.
+    Type: String
+
+Metadata:
+  AWS::CloudFormation::Interface:
+      ParameterGroups:
+        - 
+          Label:
+            default: "Network cfg"
+          Parameters:
+            - VpcCIDRBlock
+            - Subnet01CIDRBlock
+            - Subnet02CIDRBlock
+            - Subnet03CIDRBlock
+
+Conditions:
+  Has2Azs:
+    Fn::Or:
+      - Fn::Equals:
+        - {Ref: 'AWS::Region'}
+        - us-west-2
+      - Fn::Equals:
+        - {Ref: 'AWS::Region'}
+        - us-east-1
+      - Fn::Equals:
+        - {Ref: 'AWS::Region'}
+        - me-south-1
+  
+  HasMore:
+    Fn::Not:
+      - Condition: Has2Azs
+
+Resources:
+  VPC:
+      Type: AWS::EC2::VPC
+      Properties:
+          CidrBlock: !Ref VpcCIDRBlock
+          EnableDnsHostnames: true
+          Tags:
+              - Key: ProjectName
+                Value: !Ref ProjectName
+              - Key: EntityProp
+                Value: !Sub '${ProjectName}-VPC'
+
+  InternetGateway:
+      Type: AWS::EC2::InternetGateway
+      Properties:
+          Tags:
+              - Key: ProjectName
+                Value: !Ref ProjectName
+              - Key: EntityProp
+                Value: !Sub '${ProjectName}-Internet Gateway'
+
+  VPCGatewayAttachment:
+      Type: AWS::EC2::VPCGatewayAttachment
+      Properties:
+          InternetGatewayId: !Ref InternetGateway
+          VpcId: !Ref VPC
+
+  RouteTable:
+      Type: AWS::EC2::RouteTable
+      Properties:
+          VpcId: !Ref VPC
+          Tags:
+              - Key: Name
+                Value: Route Table
+              - Key: ProjectName
+                Value: !Sub ${ProjectName}
+
+  Route:
+      DependsOn: VPCGatewayAttachment
+      Type: AWS::EC2::Route
+      Properties:
+          RouteTableId: !Ref RouteTable
+          DestinationCidrBlock: 0.0.0.0/0
+          GatewayId: !Ref InternetGateway
+  
+  VPCSubnet01:
+      Type: AWS::EC2::Subnet
+      Properties:
+          VpcId: !Ref VPC
+          CidrBlock: !Ref Subnet01CIDRBlock
+          AvailabilityZone: !Select [ 0, !GetAZs '' ]
+          Tags:
+              - Key: Name
+                Value: !Sub "${ProjectName}-Subnet01CIDRBlock"
+                 
+  VPCSubnet02:
+      Type: AWS::EC2::Subnet
+      Properties:
+          VpcId: !Ref VPC
+          CidrBlock: !Ref Subnet02CIDRBlock
+          AvailabilityZone: !Select [ 1, !GetAZs '' ]
+          Tags:
+              - Key: Name
+                Value: !Sub "${ProjectName}-Subnet02CIDRBlock" 
+
+  VPCSubnet03:
+      Condition: HasMore
+      Type: AWS::EC2::Subnet
+      Properties:
+          VpcId: !Ref VPC
+          CidrBlock: !Ref Subnet03CIDRBlock
+          AvailabilityZone: !Select [ 2, !GetAZs '' ]
+          Tags:
+              - Key: Name
+                Value: !Sub "${ProjectName}-Subnet03CIDRBlock"
+
+  Subnet01RouteTableAssociation:
+      Type: AWS::EC2::SubnetRouteTableAssociation
+      Properties:
+          SubnetId: !Ref VPCSubnet01
+          RouteTableId: !Ref RouteTable
+          
+  Subnet02RouteTableAssociation:
+      Type: AWS::EC2::SubnetRouteTableAssociation
+      Properties:
+          SubnetId: !Ref VPCSubnet02
+          RouteTableId: !Ref RouteTable
+          
+  Subnet03RouteTableAssociation:
+      Condition: HasMore
+      Type: AWS::EC2::SubnetRouteTableAssociation
+      Properties:
+          SubnetId: !Ref VPCSubnet03
+          RouteTableId: !Ref RouteTable
+
+  VPCSecGroup:
+      Type: AWS::EC2::SecurityGroup
+      Properties:
+          GroupDescription: Ensures communication between kubernetes worker nodes
+          VpcId: !Ref VPC
+
+Outputs:
+
+  SubnetIds:
+      Value:
+          Fn::If:
+            - HasMore
+            - !Join [",", [!Ref VPCSubnet01, !Ref VPCSubnet02, !Ref VPCSubnet03] ]
+            - !Join [",", [!Ref VPCSubnet01, !Ref VPCSubnet02] ]
+      Export:
+        Name: !Sub ${ProjectName}-SubnetIds
+  
+  VPCSecG:
+      Value: !Join [",", [!Ref VPCSecGroup]]
+      Export:
+        Name: !Sub ${ProjectName}-VPCSecurityGroup
+
+  VpcId:
+      Value: !Ref VPC
+      Export: 
+        Name: !Sub ${ProjectName}-VpcID

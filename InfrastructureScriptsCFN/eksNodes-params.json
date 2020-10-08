@@ -1,0 +1,50 @@
+[
+    {
+        "ParameterKey": "ProjectName",
+        "ParameterValue": "Green-Blue-Capstone-Udacity-NDG"
+    },
+    {
+        "ParameterKey": "KeyName",
+        "ParameterValue": "jenkinsKeyPair"
+    },
+    {
+        "ParameterKey": "NodeImageId",
+        "ParameterValue": "ami-0d1cd67c26f5fca19"
+    },
+    {
+        "ParameterKey": "NodeInstanceType",
+        "ParameterValue": "t3.medium"
+    },
+    {
+        "ParameterKey": "NodeAutoScalingGroupMinSize",
+        "ParameterValue": "1"
+    },
+    {
+        "ParameterKey": "NodeAutoScalingGroupMaxSize",
+        "ParameterValue": "4"
+    },
+    {
+        "ParameterKey": "NodeAutoScalingGroupDesiredCapacity",
+        "ParameterValue": "4"
+    },
+    {
+        "ParameterKey": "NodeVolumeSize",
+        "ParameterValue": "20"
+    },
+    {
+        "ParameterKey": "ClusterName",
+        "ParameterValue": "myCluster"
+    },
+    {
+        "ParameterKey": "BootstrapArguments",
+        "ParameterValue": ""
+    },
+    {
+        "ParameterKey": "NodeGroupName",
+        "ParameterValue": "EKSNodeGroup"
+    },
+    {
+        "ParameterKey": "ClusterControlPlaneSecurityGroup",
+        "ParameterValue": "sg-0cf798b82da4dfa01"
+    }
+]
