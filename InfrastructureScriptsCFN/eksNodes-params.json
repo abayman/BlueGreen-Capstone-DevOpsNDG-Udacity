@@ -45,6 +45,6 @@
     },
     {
         "ParameterKey": "ClusterControlPlaneSecurityGroup",
-        "ParameterValue": "sg-0cf798b82da4dfa01"
+        "ParameterValue": "sg-0b0b8be64a1c22175"
     }
 ]

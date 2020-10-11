@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: udacitydevopscapstone-legacy
+  labels:
+    app: udacitydevopscapstone-legacy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: udacitydevopscapstone-legacy
+  template:
+    metadata: 
+      labels:
+        app: udacitydevopscapstone-legacy
+    spec:
+      containers:
+        - name: udacitydevopscapstone-legacy
+          image: abayman/udacitydevopscapstone-legacy
+          ports:
+          - containerPort: 5000
