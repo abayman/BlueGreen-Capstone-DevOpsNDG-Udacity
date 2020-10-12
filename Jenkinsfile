@@ -1,6 +1,6 @@
 pipeline {
     environment{
-        registryCredential = 'docker-hub' 
+        registryCredential = 'docker_creds' 
         greenDockerImage = '' 
         blueDockerImage = ''
     }
@@ -20,7 +20,7 @@ pipeline {
 
         stage('Set K8S Context'){
             steps {
-                withAWS(credentials:'aws-credentials'){
+                withAWS(credentials:'awsLogin'){
                     sh "kubectl config set-context arn:aws:eks:us-west-2:423240894622:cluster/myCluster"
                 }
             }
