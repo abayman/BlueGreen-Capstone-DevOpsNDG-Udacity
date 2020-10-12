@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: udacitydevopscapstone-green
+  labels:
+    app: udacitydevopscapstone-green
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: udacitydevopscapstone-green
+  template:
+    metadata: 
+      labels:
+        app: udacitydevopscapstone-green
+    spec:
+      containers:
+        - name: udacitydevopscapstone-green
+          image: abayman/udacitydevopscapstone-green
+          ports:
+          - containerPort: 5000

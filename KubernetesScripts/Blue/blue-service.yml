@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: udacitydevopscapstone-blue-svc
+spec:
+  selector:
+    app: udacitydevopscapstone-blue
+  ports:
+  - port: 80
+    targetPort: 5000
+  type: LoadBalancer
