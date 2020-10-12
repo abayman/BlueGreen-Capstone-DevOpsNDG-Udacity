@@ -29,12 +29,12 @@ pipeline {
         stage('Build Green Docker Image') {
             steps {
                 script{
-                    greenDockerImage = docker.build "abayman/udacitydevopscapstone-legacy01"
+                    greenDockerImage = docker.build "abayman/udacitydevopscapstone-legacy"
                 }
             }
         }
 
-        stage('Upload Green Image to Docker-Hub'){
+        stage('Upload Legacy'){
             steps{
                 script{
                     docker.withRegistry('', registryCredential){
@@ -43,5 +43,14 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy Legacy Image') {
+            steps {
+                withAWS(credentials:'awsLogin') {
+                    sh "kubectl apply -f initial-deployment/initial-template.yml && kubectl apply -f initial-deployment/initial-service.yml"
+                }
+            }
+        }
+       
     }
 }

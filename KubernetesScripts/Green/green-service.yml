@@ -4,7 +4,7 @@ metadata:
   name: udacitydevopscapstone-green-svc
 spec:
   selector:
-    app: udacitydevopscapstone-legacy
+    app: udacitydevopscapstone-green
   ports:
   - port: 80
     targetPort: 5000
