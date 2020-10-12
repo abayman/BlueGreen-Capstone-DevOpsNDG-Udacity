@@ -14,7 +14,7 @@ pipeline {
 
         stage('Lint Code'){
             steps {
-                sh "bash ./run_pylint.sh"
+                sh "bash ./run-lint.sh"
             }
         }
 
