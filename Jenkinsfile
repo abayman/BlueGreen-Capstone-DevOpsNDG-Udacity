@@ -38,7 +38,7 @@ pipeline {
 
         stage('Clear Local Image'){
             steps{
-                sh "docker rm image abayman/udacitydevopscapstone-legacy:latest"
+                sh "docker image rm abayman/udacitydevopscapstone-legacy:latest"
             }
         }
 
