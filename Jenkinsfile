@@ -50,7 +50,10 @@ pipeline {
         stage('Deploy Legacy Image') {
             steps {
                 withAWS(credentials:'awsLogin') {
-                    sh "kubectl apply -f initial-deployment/initial-template.yml && kubectl apply -f initial-deployment/initial-service.yml"
+                    sh '''
+                        kubectl config set-context arn:aws:eks:us-west-2:423240894622:cluster/myCluster
+                        kubectl apply -f initial-deployment/initial-template.yml && kubectl apply -f initial-deployment/initial-service.yml
+                    '''
                 }
             }
         }
