@@ -42,7 +42,7 @@ pipeline {
             }
         }
 
-        stage('K8s ctx 01'){
+        stage('K8s ctx 03'){
             steps{
                 withAWS(credentials:'awsLogin'){
                     sh "kubectl get all"
