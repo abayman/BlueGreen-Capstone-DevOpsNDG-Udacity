@@ -18,22 +18,6 @@ pipeline {
             }
         }
 
-        stage('Set K8S Context'){
-            steps {
-                withAWS(credentials:'awsLogin'){
-                    sh "aws eks --region us-west-2 update-kubeconfig --name myCluster && kubectl config set-context arn:aws:eks:us-west-2:423240894622:cluster/myCluster && kubectl get all"
-                }
-            }
-        }
-
-        stage('Test Kubectl'){
-            steps{
-                withAWS(credentials:'awsLogin'){
-                    sh "kubectl config current-context && kubectl get all"
-                }
-            }
-        }
-
         stage('Build Green Docker Image') {
             steps {
                 script{
@@ -48,6 +32,16 @@ pipeline {
                     docker.withRegistry('', registryCredential){
                         greenDockerImage.push()
                     }
+                }
+            }
+        }
+
+        stage('Set K8S Context'){
+            steps {
+                withAWS(region:'us-west-2', credentials:'awsLogin'){
+                    sh '''
+                        kubectl config use-context arn:aws:eks:us-west-2:423240894622:cluster/myCluster
+                    '''
                 }
             }
         }
