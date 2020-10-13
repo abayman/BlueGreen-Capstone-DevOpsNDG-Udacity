@@ -21,15 +21,7 @@ pipeline {
         stage('Set K8S Context'){
             steps {
                 withAWS(credentials:'awsLogin'){
-                    sh "kubectl config set-context arn:aws:eks:us-west-2:423240894622:cluster/myCluster"
-                }
-            }
-        }
-
-        stage('view k8s info'){
-            steps {
-                withAWS(credentials:'awsLogin'){
-                    sh "kubectl config current-context && kubectl get all"
+                    sh "kubectl config set-context arn:aws:eks:us-west-2:423240894622:cluster/myCluster && kubectl config current-context && kubectl get all"
                 }
             }
         }
