@@ -3,6 +3,7 @@ pipeline {
         registryCredential = 'dockerCreds' 
         greenDockerImage = '' 
         blueDockerImage = ''
+        legacyDockerImage = ''
     }
     agent any 
     stages {
@@ -18,10 +19,10 @@ pipeline {
             }
         }
 
-        stage('Build Green Docker Image') {
+        stage('Build Legacy Docker Image') {
             steps {
                 script{
-                    greenDockerImage = docker.build "abayman/udacitydevopscapstone-legacy"
+                    legacyDockerImage = docker.build "abayman/udacitydevopscapstone-legacy"
                 }
             }
         }
@@ -30,7 +31,7 @@ pipeline {
             steps{
                 script{
                     docker.withRegistry('', registryCredential){
-                        greenDockerImage.push()
+                        legacyDockerImage.push()
                     }
                 }
             }
@@ -59,6 +60,47 @@ pipeline {
                 withAWS(credentials:'awsLogin') {
                     sh '''
                         kubectl apply -f initial-deployment/initial-template.yml && kubectl apply -f initial-deployment/initial-service.yml
+                    '''
+                }
+            }
+        }
+
+        stage('Build & Deploy Green?')
+        {
+            steps{
+                input "Proceed with Green build and Deployment?"
+            }
+        }
+
+        stage('Build Green Docker Image') {
+            steps {
+                script{
+                    greenDockerImage = docker.build "abayman/udacitydevopscapstone-green"
+                }
+            }
+        }
+
+        stage('Upload Green'){
+            steps{
+                script{
+                    docker.withRegistry('', registryCredential){
+                        greenDockerImage.push()
+                    }
+                }
+            }
+        }
+
+        stage('Clear Local Green Image'){
+            steps{
+                sh "docker image rm abayman/udacitydevopscapstone-green:latest"
+            }
+        }
+
+        stage('Deploy Green Image') {
+            steps {
+                withAWS(credentials:'awsLogin') {
+                    sh '''
+                        kubectl apply -f KubernetesScripts/Green/green-template.yml && kubectl apply -f KubernetesScripts/Green/green-service.yml
                     '''
                 }
             }

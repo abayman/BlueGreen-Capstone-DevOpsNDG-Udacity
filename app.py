@@ -3,12 +3,12 @@ main module flask app
 """
 from flask import Flask, render_template
 
-app = Flask(__name__,template_folder='initial-deployment')
+app = Flask(__name__,template_folder='htmlfiles')
 
 @app.route('/')
 def index():
     """
     main route
     """
-    return render_template('initial.html')
+    return render_template('green.html')
     
