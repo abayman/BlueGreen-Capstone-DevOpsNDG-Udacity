@@ -29,7 +29,7 @@ pipeline {
         stage('Test Kubectl'){
             steps{
                 withAWS(credentials:'awsLogin'){
-                    sh "kubectl get all"
+                    sh "kubectl config current-context && kubectl get all"
                 }
             }
         }
