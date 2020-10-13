@@ -46,6 +46,7 @@ pipeline {
             steps {
                 withAWS(region:'us-west-2', credentials:'awsLogin'){
                     sh '''
+                        rm ~/.kube/config
                         aws eks --region us-west-2 update-kubeconfig --name myCluster
                         kubectl config current-context
                     '''
