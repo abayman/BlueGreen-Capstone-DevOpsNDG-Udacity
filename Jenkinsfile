@@ -40,7 +40,8 @@ pipeline {
             steps {
                 withAWS(region:'us-west-2', credentials:'awsLogin'){
                     sh '''
-                        kubectl config use-context arn:aws:eks:us-west-2:423240894622:cluster/myCluster
+                        kubectl config set-context arn:aws:eks:us-west-2:423240894622:cluster/myCluster
+                        kubectl config current-context
                     '''
                 }
             }
