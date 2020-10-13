@@ -26,6 +26,13 @@ pipeline {
             }
         }
 
+        stage('Test Kubectl'){
+            steps{
+                withAWS(credentials:'awsLogin'){
+                    sh "kubectl get all"
+            }
+        }
+
         stage('Build Green Docker Image') {
             steps {
                 script{
