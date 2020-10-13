@@ -26,7 +26,7 @@ pipeline {
             }
         }
 
-        stage('Set K8S Context'){
+        stage('view k8s info'){
             steps {
                 withAWS(credentials:'awsLogin'){
                     sh "kubectl config current-context && kubectl get all"
