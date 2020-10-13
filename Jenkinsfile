@@ -30,6 +30,7 @@ pipeline {
             steps{
                 withAWS(credentials:'awsLogin'){
                     sh "kubectl get all"
+                }
             }
         }
 
