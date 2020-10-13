@@ -47,7 +47,7 @@ pipeline {
         stage('Deploy Legacy Image') {
             steps {
                 withAWS(credentials:'awsLogin') {
-                    sh "kubectl apply -f initial-deployment/initial-template.yml && kubectl apply -f initial-deployment/initial-service.yml"
+                    sh "kubectl apply -f initial-deployment/initial-template.yml --token $TOKEN_FROM_WITH_CREDENTIALS  && kubectl apply -f initial-deployment/initial-service.yml --token $TOKEN_FROM_WITH_CREDENTIALS"
                 }
             }
         }
