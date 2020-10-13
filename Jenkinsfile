@@ -26,26 +26,10 @@ pipeline {
             }
         }
 
-        stage('K8s ctx 01'){
-            steps{
+        stage('Set K8S Context'){
+            steps {
                 withAWS(credentials:'awsLogin'){
-                    sh "aws eks --region us-west-2 update-kubeconfig --name myCluster"
-                }
-            }
-        }
-
-        stage('K8s ctx 02'){
-            steps{
-                withAWS(credentials:'awsLogin'){
-                    sh "kubectl config current-context"
-                }
-            }
-        }
-
-        stage('K8s ctx 03'){
-            steps{
-                withAWS(credentials:'awsLogin'){
-                    sh "kubectl get all"
+                    sh "kubectl config current-context && kubectl get all"
                 }
             }
         }
