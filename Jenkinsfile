@@ -46,7 +46,8 @@ pipeline {
             steps {
                 withAWS(region:'us-west-2', credentials:'awsLogin'){
                     sh '''
-                        kubectl config set-context arn:aws:eks:us-west-2:423240894622:cluster/myCluster
+                        aws eks --region us-east-2 update-kubeconfig --name myCluster
+                        kubectl config current-context
                     '''
                 }
             }
@@ -56,7 +57,6 @@ pipeline {
             steps {
                 withAWS(credentials:'awsLogin') {
                     sh '''
-                        kubectl config set-context arn:aws:eks:us-west-2:423240894622:cluster/myCluster
                         kubectl apply -f initial-deployment/initial-template.yml && kubectl apply -f initial-deployment/initial-service.yml
                     '''
                 }
