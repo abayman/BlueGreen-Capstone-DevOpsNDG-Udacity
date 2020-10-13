@@ -10,5 +10,5 @@ def index():
     """
     main route
     """
-    return render_template('green.html')
+    return render_template('blue.html')
     

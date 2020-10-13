@@ -105,6 +105,47 @@ pipeline {
                 }
             }
         }
+
+        stage('Build & Deploy Blue?')
+        {
+            steps{
+                input "Proceed with blue build and Deployment?"
+            }
+        }
+
+        stage('Build Blue Docker Image') {
+            steps {
+                script{
+                    blueDockerImage = docker.build "abayman/udacitydevopscapstone-blue"
+                }
+            }
+        }
+
+        stage('Upload Blue'){
+            steps{
+                script{
+                    docker.withRegistry('', registryCredential){
+                        blueDockerImage.push()
+                    }
+                }
+            }
+        }
+
+        stage('Clear Local Blue Image'){
+            steps{
+                sh "docker image rm abayman/udacitydevopscapstone-blue:latest"
+            }
+        }
+
+        stage('Deploy Blue Image') {
+            steps {
+                withAWS(credentials:'awsLogin') {
+                    sh '''
+                        kubectl apply -f KubernetesScripts/Blue/blue-template.yml && kubectl apply -f KubernetesScripts/Blue/blue-service.yml
+                    '''
+                }
+            }
+        }
        
     }
 }
