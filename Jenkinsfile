@@ -1,6 +1,6 @@
 pipeline {
     environment{
-        registryCredential = 'docker_creds' 
+        registryCredential = 'dockerCreds' 
         greenDockerImage = '' 
         blueDockerImage = ''
     }
@@ -36,12 +36,17 @@ pipeline {
             }
         }
 
+        stage('Clear Local Image'){
+            steps{
+                sh "docker rm image abayman/udacitydevopscapstone-legacy:latest"
+            }
+        }
+
         stage('Set K8S Context'){
             steps {
                 withAWS(region:'us-west-2', credentials:'awsLogin'){
                     sh '''
                         kubectl config set-context arn:aws:eks:us-west-2:423240894622:cluster/myCluster
-                        kubectl config current-context
                     '''
                 }
             }
