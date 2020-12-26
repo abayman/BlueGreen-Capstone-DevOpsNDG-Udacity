@@ -51,14 +51,14 @@ We assume that we have a github and dockerhub accounts.
   2. From AWS management console, select that you want to connect to the newly created machine, and copy the command.
   3. Paste the command into terminal.
 3. Update and install the required prerequisites for Jenkins. (Assuming you have a Ubuntu image on your EC2 instance machine)
-  'sudo apt-get update'
+  `sudo apt-get update`
 4. Install Jenkins using the following commands in EC2 machine's terminal:
-  1. 'sudo apt install default-jdk'
-  2. 'wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -'
-  3. 'sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list''
-  4. 'sudo apt update && sudo apt upgrade'
-  5. 'sudo apt install jenkins'
-  6. 'sudo cat /var/lib/jenkins/secrets/initialAdminPassword'
+  1. `sudo apt install default-jdk`
+  2. `wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -`
+  3. `sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'`
+  4. `sudo apt update && sudo apt upgrade`
+  5. `sudo apt install jenkins`
+  6. `sudo cat /var/lib/jenkins/secrets/initialAdminPassword`
 5. Install Docker.
   1. Follow [this link](https://docs.docker.com/engine/install/) to install docker according to your OS/Linux distro.
 6. Add Jenkins to docker group.
