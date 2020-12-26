@@ -62,11 +62,11 @@ We assume that we have a github and dockerhub accounts.
 5. Install Docker.
   1. Follow [this link](https://docs.docker.com/engine/install/) to install docker according to your OS/Linux distro.
 6. Add Jenkins to docker group.
-  1. 'sudo groupadd docker'
-  2. 'sudo gpasswd -a jenkins docker'
-  3. 'sudo service restart docker'
-  4. 'systemctl stop jenkins'
-  5. 'systemctl start jenkins'
+  1. `sudo groupadd docker`
+  2. `sudo gpasswd -a jenkins docker`
+  3. `sudo service restart docker`
+  4. `systemctl stop jenkins`
+  5. `systemctl start jenkins`
 7. Log into your Jenkins server via AWS FQDN (fully qualified domain name) followed by ':8080'. Look at the URL in the below image:
   ![See here:!](/screenshots/myJenkinsServer.png "My Jenkins Server!")
   1. You will find that it asks you for a password, please refer to step 4.6.
@@ -78,8 +78,8 @@ We assume that we have a github and dockerhub accounts.
 9. Install AWS CLI [from here](https://aws.amazon.com/cli/#:~:text=The%20AWS%20Command%20Line%20Interface,and%20automate%20them%20through%20scripts.).
 10. Back in the Jenkins EC2 machine terminal, install kubernetes CLI (kubectl) from [this link](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
 11. Install Git, Python, and Pip (terminal):
-  1. 'sudo apt install git-all'
-  2. 'sudo apt-get update && sudo apt-get -y install python3-pip'
+  1. `sudo apt install git-all`
+  2. `sudo apt-get update && sudo apt-get -y install python3-pip`
 12. Use CloudFormation to deploy the VPC infra files. There are two ways of doing this:
   a. Through the CloudFormation gui.
     1. Open CloudFormation from AWS management console.
@@ -90,14 +90,14 @@ We assume that we have a github and dockerhub accounts.
     1. Use the create.sh and update.sh scripts and run them through terminal to emulate the processes mentioned in 12.a.
 13. From the AWS Management Console, create an EKS cluster.
 14. After creating the cluster, remember its name, and open terminal on your local machine (not the jenkins terminal) and apply these commands:
-  1. 'aws eks --region <the region where you created the cluster> update-kubeconfig --name <your cluster name>'
-  2. 'kubectl config current-context'
+  1. `aws eks --region <the region where you created the cluster> update-kubeconfig --name <your cluster name>`
+  2. `kubectl config current-context`
 15. Go back to CloudFormation and deploy your worker nodes. Same rules and method used in step 12.
 16. Enable your worker nodes to join the EKS cluster by applying the auth.yml via this command
-  1. 'kubectl apply -f ~/KubernetesScripts/aws-auth-cm.yaml'
-  2. Run 'kubectl get nodes' You should get an output in the termianl detailing the worker nodes, their age, and status.
+  1. `kubectl apply -f ~/KubernetesScripts/aws-auth-cm.yaml`
+  2. Run `kubectl get nodes' You should get an output in the termianl detailing the worker nodes, their age, and status.
 17. Apply both blue and green kubernetes services (outside pipeline as a test) by running: 
-  'kubectl apply -f ~/KubernetesScripts/Blue/blue-service.yml && kubectl apply -f ~/KubernetesScripts/Blue/blue-template.yml'
+  `kubectl apply -f ~/KubernetesScripts/Blue/blue-service.yml && kubectl apply -f ~/KubernetesScripts/Blue/blue-template.yml`
 18. If successful, run 'kubectl get all' You should get info where it details the ip/fqdn of the service/deployment showing that it is up and running.
 19. Build Jenkins pipeline.
 20. Profit!
