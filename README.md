@@ -95,7 +95,7 @@ We assume that we have a github and dockerhub accounts.
 15. Go back to CloudFormation and deploy your worker nodes. Same rules and method used in step 12.
 16. Enable your worker nodes to join the EKS cluster by applying the auth.yml via this command
     1. `kubectl apply -f ~/KubernetesScripts/aws-auth-cm.yaml`
-    2. Run `kubectl get nodes' You should get an output in the termianl detailing the worker nodes, their age, and status.
+    2. Run `kubectl get nodes` You should get an output in the termianl detailing the worker nodes, their age, and status.
 17. Apply both blue and green kubernetes services (outside pipeline as a test) by running: <br>
   `kubectl apply -f ~/KubernetesScripts/Blue/blue-service.yml && kubectl apply -f ~/KubernetesScripts/Blue/blue-template.yml`
 18. If successful, run 'kubectl get all' You should get info where it details the ip/fqdn of the service/deployment showing that it is up and running.
